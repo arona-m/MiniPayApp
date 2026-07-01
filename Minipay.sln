@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37328.6 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minipay.API", "Minipay\Minipay.API.csproj", "{1D602FFC-DDE5-4EAB-8B81-755D4084C7EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minipay.Domain", "Minipay.Domain\Minipay.Domain.csproj", "{FA27DE4E-EB01-4DA8-9AD8-70FAD62CBE5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minipay.Application", "Minipay.Application\Minipay.Application.csproj", "{31903906-607C-4EFB-B48E-70183D6D610D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minipay.Infrastructure", "Minipay.Infrastructure\Minipay.Infrastructure.csproj", "{014D9E98-0788-4C4C-AEDA-CAE44A9458D1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D602FFC-DDE5-4EAB-8B81-755D4084C7EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D602FFC-DDE5-4EAB-8B81-755D4084C7EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D602FFC-DDE5-4EAB-8B81-755D4084C7EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D602FFC-DDE5-4EAB-8B81-755D4084C7EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA27DE4E-EB01-4DA8-9AD8-70FAD62CBE5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA27DE4E-EB01-4DA8-9AD8-70FAD62CBE5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA27DE4E-EB01-4DA8-9AD8-70FAD62CBE5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA27DE4E-EB01-4DA8-9AD8-70FAD62CBE5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31903906-607C-4EFB-B48E-70183D6D610D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31903906-607C-4EFB-B48E-70183D6D610D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31903906-607C-4EFB-B48E-70183D6D610D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31903906-607C-4EFB-B48E-70183D6D610D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{014D9E98-0788-4C4C-AEDA-CAE44A9458D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{014D9E98-0788-4C4C-AEDA-CAE44A9458D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{014D9E98-0788-4C4C-AEDA-CAE44A9458D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{014D9E98-0788-4C4C-AEDA-CAE44A9458D1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7160DDD3-0C7C-48A8-9475-98A0445DE4EA}
+	EndGlobalSection
+EndGlobal

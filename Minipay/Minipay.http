@@ -1,0 +1,6 @@
+@Minipay_HostAddress = http://localhost:5043
+
+GET {{Minipay_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
