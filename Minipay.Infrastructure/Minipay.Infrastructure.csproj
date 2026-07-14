@@ -1,9 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<RootNamespace>Minipay.Infrastructure</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.*" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.*">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.9">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.9" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.9" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Minipay.Application\Minipay.Application.csproj" />
+		<ProjectReference Include="..\Minipay.Domain\Minipay.Domain.csproj" />
+	</ItemGroup>
 
 </Project>
