@@ -1,13 +1,111 @@
-Created the Domain layer for MiniPay App.
-DDD -> Enitity : Payment is an entity, it has an Id. Two payments with the same Amount but different Id, are different payments.
-       Value Object : Money, new Money (100, EUR) and another new Money (100, EUR) are equal in every sense, immutable and self validatimg.
-       Aggregate: Cluster of related domain objects (entities and value objects) Payment is the entire aggregate, it owns Money as a sub object
-       Aggregate Root : Entity in aggregate through which all changes must flow, nothing external can write to Payment.status directly.
-       Domain Event : Immutable record of something inside domain, raised by aggregates
-       Always Valid : A domain object should never exist in an invalid state, achieved through constructor validation Money, private setters Payment, and factory methods Payment.Create
-SOLID -> Single Responsibility Principle: Each class has a reason to change. Money only changes if money representation rules change, Payment only changes if payment life cycle rules change,
-                                           AggregateRoot changes only if the domain event management changes.
-       Open/Closed Princip;e: Payment's state is open for extension(new transition row to the switch) and closed for modification (methods that exists dont need to change)
-       Liskov Substitution Principle: Payment inherits AggregateRoot and doesnt override its behaviour but adds to it. Whoever holds an AggrgateRoot reference could hold a Paymwent
-       Interface Segregation Principle: IDomainEvent is a very small interface that only holds OcurredOnUtc, not a interface that would force implementors to use methods they dont need.
-       Dependency Inversion Principle: Minipay.Domain project depends on nothing.
+# MiniPay
+
+A payment processing API built to demonstrate **Clean Architecture**, **Domain-Driven Design**, and **SOLID principles** 
+
+---
+
+## Architecture
+
+MiniPay follows Clean Architecture. Dependencies only point inward — outer layers know about inner layers, never the reverse.
+
+```
+┌─────────────────────────────┐
+│          Minipay.Api        │  HTTP only. No business logic.
+├─────────────────────────────┤
+│     Minipay.Application     │  Use cases. Orchestrates domain objects.
+├─────────────────────────────┤
+│       Minipay.Domain        │  Business rules. No external dependencies.
+├─────────────────────────────┤
+│    Minipay.Infrastructure   │  EF Core + SQL Server. Implements interfaces.
+└─────────────────────────────┘
+```
+
+---
+
+## Domain Layer
+
+The heart of the application. Contains all business rules and enforces them internally.
+
+**Payment** is the aggregate root. All state changes go through its own methods — no public setters, no external mutation.
+
+```csharp
+payment.Authorize();   // enforces Created → Authorized rule internally
+payment.Settle();      // enforces Authorized → Settled rule internally
+payment.Fail(reason);  // enforces valid transitions internally
+```
+
+**Money** is a Value Object. Immutable, self-validating, compared by value not identity.
+
+```csharp
+var money = new Money(100, "EUR");  // validates itself on construction
+```
+
+**Domain Events** are raised on every state change. The aggregate communicates what happened without knowing what will react to it.
+
+---
+
+## Application Layer
+
+Thin use case handlers that coordinate domain objects, the repository, and logging. No business logic lives here.
+
+Uses **CQRS** — Commands change state, Queries only read it:
+
+| Type | Examples |
+|---|---|
+| Commands | `CreatePayment`, `AuthorizePayment`, `SettlePayment`, `FailPayment` |
+| Queries | `GetPaymentById`, `GetPaymentsByStatus` |
+
+`IPaymentRepository` is declared here, not in Infrastructure. This is **Dependency Inversion** — Application defines what it needs, Infrastructure satisfies it.
+
+---
+
+## Payment Lifecycle
+
+```
+            ┌─────────┐
+  start ──► │ Created │
+            └────┬────┘
+             ┌───┴───┐
+             ▼       ▼
+      ┌────────────┐ ┌────────┐
+      │ Authorized │ │ Failed │
+      └─────┬──────┘ └────────┘
+        ┌───┴───┐
+        ▼       ▼
+    ┌────────┐ ┌────────┐
+    │Settled │ │ Failed │
+    └────────┘ └────────┘
+```
+
+Rules are enforced by `Payment.EnsureTransitionAllowed()` — one method, one place, no duplication.
+
+---
+
+## Infrastructure Layer
+
+Implements what Application declared. Uses **EF Core 8** with SQL Server.
+
+`Money` is mapped as an **owned type** — stored as columns on the Payments table, not a separate table. This reflects its nature as a Value Object.
+
+```csharp
+builder.OwnsOne(p => p.Amount, money => {
+    money.Property(m => m.Amount).HasColumnName("Amount");
+    money.Property(m => m.Currency).HasColumnName("Currency");
+});
+```
+
+---
+
+## Testing
+
+Tests use **xUnit** and **FluentAssertions**. Application tests use a `FakePaymentRepository` — no database required.
+
+```bash
+dotnet test
+```
+
+---
+
+## Tech Stack
+
+`.NET 8` · `EF Core 8` · `SQL Server` · `xUnit` · `FluentAssertions` · `Swagger`
