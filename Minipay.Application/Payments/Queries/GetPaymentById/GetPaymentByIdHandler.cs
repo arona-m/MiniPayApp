@@ -25,7 +25,7 @@ namespace Minipay.Application.Payments.Queries.GetPaymentById
             var payment = await _paymentRepository.GetByIdAsync(query.PaymentId, cancellationToken)
                 ?? throw new PaymentNotFoundException(query.PaymentId);
 
-            return PaymentDto.FromDomain(payment);
+            return PaymentDto.FromDomain(payment,null); 
         }
     }
     

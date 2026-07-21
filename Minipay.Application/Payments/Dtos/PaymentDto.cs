@@ -13,16 +13,18 @@ namespace Minipay.Application.Payments.Dtos;
         string Currency,
         string Status,
         DateTime CreatedAt,
-        string? FailureReason
+        string? FailureReason,
+        string? Message
         )
 {
-  public static PaymentDto FromDomain(Payment payment) => new(
+  public static PaymentDto FromDomain(Payment payment, string? message = null) => new(
      payment.Id,
-     // 1 amount => Money value object on Payment, 2 amount => numeric value inside Money
+     // 1 amount => Money value object on Payment, 2 amount => numeric value inside Money dto flattents these two into one
      payment.Amount.Amount,
      payment.Amount.Currency,
      payment.Status.ToString(),
      payment.CreatedAt,
-     payment.FailureReason);
+     payment.FailureReason,
+     message);
    
 }

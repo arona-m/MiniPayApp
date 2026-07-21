@@ -3,7 +3,7 @@ using Minipay.Application.Commons.Interfaces;
 using Minipay.Application.Commons.Messaging;
 using Minipay.Application.Payments.Dtos;
 using Minipay.Application.Payments.Exceptions;
-using Minipay.Application.Payments.IntegrationEvent;
+
 
 namespace Minipay.Application.Payments.Command.FailPayment
 {

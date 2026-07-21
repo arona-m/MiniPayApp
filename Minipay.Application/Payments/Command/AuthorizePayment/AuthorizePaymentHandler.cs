@@ -3,7 +3,7 @@ using Minipay.Application.Commons.Interfaces;
 using Minipay.Application.Commons.Messaging;
 using Minipay.Application.Payments.Dtos;
 using Minipay.Application.Payments.Exceptions;
-using Minipay.Application.Payments.IntegrationEvent;
+using Minipay.Domain.Payments;
 
 namespace Minipay.Application.Payments.Command.AuthorizePayment;
 
@@ -30,10 +30,11 @@ public sealed class AuthorizePaymentHandler : ICommandHandler<AuthorizePaymentCo
          ?? throw new PaymentNotFoundException(command.PaymentId);
 
         //checks EnsureTransitionAllowed, sets status = authorized and raises PaymentAuthorizedDomainEvent. if not allowed, throws InvalidPaymentStateTransitionException
+        var previousStatus = payment.Status;
         payment.Authorize();
 
         await _paymentRepository.UpdateAsync(payment, cancellationToken);
-        _logger.LogInformation("Payment {PaymentId} authorized", payment.Id);
+        _logger.LogInformation("Payment {PaymentId} status changed from {PreviousStatus} to {NewStatus}", payment.Id, previousStatus, payment.Status);
 
         //await _eventBus.PublishAsync(
         //    new PaymentAuthorizedIntegrationEvent(
@@ -44,8 +45,8 @@ public sealed class AuthorizePaymentHandler : ICommandHandler<AuthorizePaymentCo
         //    cancellationToken); 
 
         payment.ClearDomainEvents();
-
-        return PaymentDto.FromDomain(payment);
+        var message = $"Success: status changed from {previousStatus} to {payment.Status}";
+        return PaymentDto.FromDomain(payment, message);
     }
 }
 

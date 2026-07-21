@@ -13,10 +13,11 @@ namespace Minipay.Api.Contracts
         string Currency,
         string Status,
         DateTime CreatedAt,
-        string? FailureReason)
+        string? FailureReason,
+        string? message)
     {
         public static PaymentResponse FromDto(PaymentDto dto) =>
-            new(dto.Id, dto.Amount,dto.Currency, dto.Status, dto.CreatedAt, dto.FailureReason);
+            new(dto.Id, dto.Amount,dto.Currency, dto.Status, dto.CreatedAt, dto.FailureReason, dto.Message);
     }
     
     public sealed record FailPaymentRequest(string Reason);

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.37328.6 d17.14
+VisualStudioVersion = 17.14.37328.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minipay.API", "Minipay\Minipay.API.csproj", "{1D602FFC-DDE5-4EAB-8B81-755D4084C7EF}"
 EndProject
@@ -10,6 +10,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minipay.Application", "Minipay.Application\Minipay.Application.csproj", "{31903906-607C-4EFB-B48E-70183D6D610D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minipay.Infrastructure", "Minipay.Infrastructure\Minipay.Infrastructure.csproj", "{014D9E98-0788-4C4C-AEDA-CAE44A9458D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minipay.Domain.Tests", "Minipay.Domain.Tests\Minipay.Domain.Tests.csproj", "{BDBCD98D-1E60-4717-8C19-0B3DB3425BEB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{50505C97-B82B-403A-8A49-F7F54CAE3D97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minipay.Application.Tests", "Minipay.Application.Tests\Minipay.Application.Tests.csproj", "{F3F4B937-7374-4D29-9B9D-070989F5DA66}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +41,25 @@ Global
 		{014D9E98-0788-4C4C-AEDA-CAE44A9458D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{014D9E98-0788-4C4C-AEDA-CAE44A9458D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{014D9E98-0788-4C4C-AEDA-CAE44A9458D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDBCD98D-1E60-4717-8C19-0B3DB3425BEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDBCD98D-1E60-4717-8C19-0B3DB3425BEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDBCD98D-1E60-4717-8C19-0B3DB3425BEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDBCD98D-1E60-4717-8C19-0B3DB3425BEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3F4B937-7374-4D29-9B9D-070989F5DA66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3F4B937-7374-4D29-9B9D-070989F5DA66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3F4B937-7374-4D29-9B9D-070989F5DA66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3F4B937-7374-4D29-9B9D-070989F5DA66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1D602FFC-DDE5-4EAB-8B81-755D4084C7EF} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{FA27DE4E-EB01-4DA8-9AD8-70FAD62CBE5E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{31903906-607C-4EFB-B48E-70183D6D610D} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{014D9E98-0788-4C4C-AEDA-CAE44A9458D1} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{BDBCD98D-1E60-4717-8C19-0B3DB3425BEB} = {50505C97-B82B-403A-8A49-F7F54CAE3D97}
+		{F3F4B937-7374-4D29-9B9D-070989F5DA66} = {50505C97-B82B-403A-8A49-F7F54CAE3D97}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7160DDD3-0C7C-48A8-9475-98A0445DE4EA}

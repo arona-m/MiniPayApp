@@ -1,6 +1,13 @@
 using Minipay.Api.Endpoints;
 using Minipay.Application;
 using Minipay.Infrastructure;
+using Serilog;
+
+
+// better looking logs
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +19,7 @@ builder.Services.AddService(
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 

@@ -22,7 +22,7 @@ namespace Minipay.Application.Payments.Queries.GetPaymentByStatus
            GetPaymentByStatusQuery query, CancellationToken cancellationToken = default)
         {
             var payments = await _paymentRepository.GetByStatusAsync(query.Status, cancellationToken);
-            return payments.Select(PaymentDto.FromDomain).ToList();
+            return payments.Select(p => PaymentDto.FromDomain(p,null)).ToList();
         }
          
     }
