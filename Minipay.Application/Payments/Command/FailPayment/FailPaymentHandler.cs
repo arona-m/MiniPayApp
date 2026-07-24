@@ -10,13 +10,17 @@ namespace Minipay.Application.Payments.Command.FailPayment
     public sealed class FailPaymentHandler
     {
         private readonly IPaymentRepository _paymentRepository;
+        private readonly IPaymentStatisticsService _statistics;
         private readonly ILogger <FailPaymentHandler>_logger;
+
 
         public FailPaymentHandler(
            IPaymentRepository paymentRepository,
+           IPaymentStatisticsService statistics,
            ILogger<FailPaymentHandler> logger)
         {
             _paymentRepository = paymentRepository;
+            _statistics = statistics;
             _logger = logger;
         }
 
@@ -28,6 +32,8 @@ namespace Minipay.Application.Payments.Command.FailPayment
             payment.Fail(command.Reason);
 
             await _paymentRepository.UpdateAsync(payment, cancellationToken);
+            _statistics.RecordFailed();
+            
 
             _logger.LogInformation("Payment {PaymentId} failed. Reason: {Reason}", payment.Id, command.Reason);
 

@@ -10,16 +10,18 @@ namespace Minipay.Application.Payments.Command.AuthorizePayment;
 public sealed class AuthorizePaymentHandler : ICommandHandler<AuthorizePaymentCommand, PaymentDto>
 {
     private readonly IPaymentRepository _paymentRepository;
+    private readonly IPaymentStatisticsService _statistics;
     
     private readonly ILogger<AuthorizePaymentHandler> _logger;
 
     public AuthorizePaymentHandler(
      IPaymentRepository paymentRepository,
-    
-     ILogger<AuthorizePaymentHandler> logger)
+    IPaymentStatisticsService statistics,
+    ILogger<AuthorizePaymentHandler> logger
+     )
     {
         _paymentRepository = paymentRepository;
-       
+        _statistics = statistics;
         _logger = logger;
     }
 
@@ -34,6 +36,9 @@ public sealed class AuthorizePaymentHandler : ICommandHandler<AuthorizePaymentCo
         payment.Authorize();
 
         await _paymentRepository.UpdateAsync(payment, cancellationToken);
+        _statistics.RecordAuthorized();
+        
+
         _logger.LogInformation("Payment {PaymentId} status changed from {PreviousStatus} to {NewStatus}", payment.Id, previousStatus, payment.Status);
 
         //await _eventBus.PublishAsync(

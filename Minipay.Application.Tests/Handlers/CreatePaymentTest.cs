@@ -13,10 +13,12 @@ namespace Minipay.Application.Tests.CreatePaymentHandle
     {
         private readonly Mock<IPaymentRepository> _repositoryMock = new();
         private readonly Mock<ICurrencyValidator> _currencyValidatorMock = new();
+        private readonly Mock<IPaymentStatisticsService> _statisticsMock = new();
 
         private CreatePaymentHandler BuildHandler() => new(
             _repositoryMock.Object,
             _currencyValidatorMock.Object,
+            _statisticsMock.Object,
             NullLogger<CreatePaymentHandler>.Instance);
 
         [Fact]

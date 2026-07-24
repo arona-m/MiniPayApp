@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Logging.Abstractions;
 using Minipay.Application.Commons.Interfaces;
 using Minipay.Application.Payments.Command.AuthorizePayment;
+using Minipay.Application.Payments.Command.CreatePayment;
 using Minipay.Application.Payments.Exceptions;
-
 using Minipay.Domain.Payments;
 using Minipay.Domain.Payments.Exceptions;
 using Minipay.Domain.ValueObjects;
@@ -15,6 +15,13 @@ namespace Minipay.Application.Tests.Handlers
     public class AuthorizePaymentTest
     {
         private readonly Mock<IPaymentRepository> _repositoryMock = new();
+        private readonly Mock<IPaymentStatisticsService> _statisticsMock = new();
+
+        private AuthorizePaymentHandler BuildHandler() => new(
+        _repositoryMock.Object,
+        _statisticsMock.Object,
+        NullLogger<AuthorizePaymentHandler>.Instance);
+
 
         [Fact]
         public async Task HandleAsync_WithExistingCreatedPayment_AuthorizesPayment()
@@ -23,7 +30,7 @@ namespace Minipay.Application.Tests.Handlers
             var payment = Payment.Create(new Money(100, "EUR"));
             _repositoryMock.Setup(r => r.GetByIdAsync(payment.Id, It.IsAny<CancellationToken>())).ReturnsAsync(payment);
 
-            var handler = new AuthorizePaymentHandler(_repositoryMock.Object, NullLogger<AuthorizePaymentHandler>.Instance);
+            var handler = BuildHandler();
 
             // act
             var result = await handler.HandleAsync(new AuthorizePaymentCommand(payment.Id));
@@ -40,7 +47,7 @@ namespace Minipay.Application.Tests.Handlers
             // arrange
             _repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync((Payment?)null);
 
-            var handler = new AuthorizePaymentHandler(_repositoryMock.Object, NullLogger<AuthorizePaymentHandler>.Instance);
+            var handler = BuildHandler();
 
             //act
             var act = async () => await handler.HandleAsync(new AuthorizePaymentCommand(Guid.NewGuid()));
@@ -60,7 +67,7 @@ namespace Minipay.Application.Tests.Handlers
 
             _repositoryMock.Setup(r => r.GetByIdAsync(payment.Id, It.IsAny<CancellationToken>())).ReturnsAsync(payment);
 
-            var handler = new AuthorizePaymentHandler(_repositoryMock.Object, NullLogger<AuthorizePaymentHandler>.Instance);
+            var handler = BuildHandler();
 
             //act
             var act = async () => await handler.HandleAsync(new AuthorizePaymentCommand(payment.Id));
@@ -78,7 +85,8 @@ namespace Minipay.Application.Tests.Handlers
             payment.Fail("card declined");
 
             _repositoryMock.Setup(r => r.GetByIdAsync(payment.Id, It.IsAny<CancellationToken>())).ReturnsAsync(payment);
-            var handler = new AuthorizePaymentHandler(_repositoryMock.Object, NullLogger<AuthorizePaymentHandler>.Instance);
+
+            var handler = BuildHandler();
 
             //act
             var act = async () => await handler.HandleAsync(new AuthorizePaymentCommand(payment.Id));

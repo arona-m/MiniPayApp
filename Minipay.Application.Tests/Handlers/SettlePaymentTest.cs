@@ -14,6 +14,13 @@ namespace Minipay.Application.Tests.Handlers
     public class SettlePaymentTest
     {
         private readonly Mock<IPaymentRepository> _repositoryMock = new ();
+        private readonly Mock<IPaymentStatisticsService> _statisticsMock = new();
+
+        private SettlePaymentHandler BuildHandler() => new(
+            _repositoryMock.Object,
+            _statisticsMock.Object,
+            NullLogger<SettlePaymentHandler>.Instance);
+
         [Fact]
         public async Task HandleAsync_WithAuthorizedPayment_TransitionToSettled()
         {
@@ -22,7 +29,7 @@ namespace Minipay.Application.Tests.Handlers
 
             _repositoryMock.Setup(r => r.GetByIdAsync(payment.Id,It.IsAny<CancellationToken>())).ReturnsAsync(payment);
 
-            var handler = new SettlePaymentHandler(_repositoryMock.Object, NullLogger<SettlePaymentHandler>.Instance);
+            var handler = BuildHandler();
 
             //act
             var result = await handler.HandleAsync(new SettlePaymentCommand(payment.Id));
@@ -38,7 +45,7 @@ namespace Minipay.Application.Tests.Handlers
             var payment = Payment.Create(new Money(100, "EUR"));
             _repositoryMock.Setup(r => r.GetByIdAsync(payment.Id, It.IsAny<CancellationToken>())).ReturnsAsync(payment);
 
-            var handler = new SettlePaymentHandler(_repositoryMock.Object, NullLogger<SettlePaymentHandler>.Instance);
+            var handler = BuildHandler();
 
             //act
             var act = async() => await handler.HandleAsync(new SettlePaymentCommand(payment.Id));
@@ -60,7 +67,7 @@ namespace Minipay.Application.Tests.Handlers
 
             _repositoryMock.Setup(r => r.GetByIdAsync(payment.Id, It.IsAny<CancellationToken>())).ReturnsAsync(payment);
 
-            var handler = new SettlePaymentHandler(_repositoryMock.Object, NullLogger<SettlePaymentHandler>.Instance);
+            var handler = BuildHandler();
             //act
             var act = async () => await handler.HandleAsync(new SettlePaymentCommand(payment.Id));
 
@@ -77,7 +84,7 @@ namespace Minipay.Application.Tests.Handlers
 
             _repositoryMock.Setup(r => r.GetByIdAsync(payment.Id, It.IsAny<CancellationToken>())).ReturnsAsync(payment);
 
-            var handler = new SettlePaymentHandler(_repositoryMock.Object, NullLogger<SettlePaymentHandler>.Instance);
+            var handler = BuildHandler();
             //act
             var act = async () => await handler.HandleAsync(new SettlePaymentCommand(payment.Id));
             //assert
@@ -92,7 +99,7 @@ namespace Minipay.Application.Tests.Handlers
         public async Task HandleAsync_WithUnknownId_ThrowsPaymentNotFoundException()
         {
             _repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync((Payment?)null);
-            var handler = new SettlePaymentHandler(_repositoryMock.Object, NullLogger<SettlePaymentHandler>.Instance);
+            var handler = BuildHandler();
 
             //act
             var act = async () => await handler.HandleAsync(new SettlePaymentCommand(Guid.NewGuid()));

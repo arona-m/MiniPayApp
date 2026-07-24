@@ -8,13 +8,16 @@ namespace Minipay.Application.Payments.Command.SettlePayment
     public sealed class SettlePaymentHandler : ICommandHandler<SettlePaymentCommand, PaymentDto>
     {
         private readonly IPaymentRepository _paymentRepository;
+        private readonly IPaymentStatisticsService _statistics;
         private readonly ILogger<SettlePaymentHandler> _logger;
 
         public SettlePaymentHandler(
             IPaymentRepository paymentRepository,
+            IPaymentStatisticsService statistics,
             ILogger<SettlePaymentHandler> logger)
         {
             _paymentRepository = paymentRepository;
+            _statistics = statistics;
             _logger = logger;
         }
 
@@ -26,6 +29,8 @@ namespace Minipay.Application.Payments.Command.SettlePayment
             payment.Settle();
 
             await _paymentRepository.UpdateAsync(payment, cancellationToken);
+
+            _statistics.RecordSettled();
             _logger.LogInformation("Payment {PaymentId} settled", payment.Id);
 
             payment.ClearDomainEvents();

@@ -13,14 +13,16 @@ namespace Minipay.Application.Payments.Command.CreatePayment
     {
         private readonly IPaymentRepository _paymentRepository;
         private readonly ICurrencyValidator _currencyValidator;
+        private readonly IPaymentStatisticsService _statistics;
         private readonly ILogger<CreatePaymentHandler> _logger;
         
 
         //logger is used to log information about the payment creation process. It helps in tracking the flow of the application and debugging issues if they arise.
-        public CreatePaymentHandler(IPaymentRepository paymentRepository,ICurrencyValidator currencyValidator, ILogger<CreatePaymentHandler> logger)
+        public CreatePaymentHandler(IPaymentRepository paymentRepository,ICurrencyValidator currencyValidator, IPaymentStatisticsService statistics, ILogger<CreatePaymentHandler> logger)
         {
             _paymentRepository = paymentRepository;
             _currencyValidator = currencyValidator;
+            _statistics = statistics;
             _logger = logger;
         }
 
@@ -34,8 +36,11 @@ namespace Minipay.Application.Payments.Command.CreatePayment
             //Money's constructor enforces "Amount > 0" and "Currency required".
             var Money = new Money(command.Amount, command.Currency);
             var payment = Payment.Create(Money);
+
             await _paymentRepository.AddAsync(payment, cancellationToken);
 
+            _statistics.RecordCreated();
+         
             _logger.LogInformation(
              "Payment {PaymentId}  created for {Amount} {Currency}",
              payment.Id, payment.Amount.Amount, payment.Amount.Currency);

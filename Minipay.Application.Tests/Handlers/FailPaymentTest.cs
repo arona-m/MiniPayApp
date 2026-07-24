@@ -18,6 +18,12 @@ namespace Minipay.Application.Tests.Handlers
     public class FailPaymentTest
     {
         public readonly Mock<IPaymentRepository> _repositoryMock = new();
+        public readonly Mock<IPaymentStatisticsService> _statisticsMock = new();
+
+        private FailPaymentHandler BuildHandler() => new(
+            _repositoryMock.Object,
+            _statisticsMock.Object,
+            NullLogger<FailPaymentHandler>.Instance);
 
         [Fact]
 
@@ -29,7 +35,7 @@ namespace Minipay.Application.Tests.Handlers
             _repositoryMock.
                 Setup(r => r.GetByIdAsync(payment.Id, It.IsAny<CancellationToken>())).ReturnsAsync(payment);
 
-            var handler = new FailPaymentHandler(_repositoryMock.Object, NullLogger<FailPaymentHandler>.Instance);
+            var handler = BuildHandler();
 
             //act
             var result = await handler.HandleAsync(new FailPaymentCommand(payment.Id, "card declined"));
@@ -52,7 +58,7 @@ namespace Minipay.Application.Tests.Handlers
             _repositoryMock.Setup
                 (r => r.GetByIdAsync(payment.Id, It.IsAny<CancellationToken>())).ReturnsAsync(payment);
 
-            var handler = new FailPaymentHandler(_repositoryMock.Object, NullLogger<FailPaymentHandler>.Instance);
+            var handler = BuildHandler();
 
             //act
             var result = await handler.HandleAsync(new FailPaymentCommand(payment.Id, "issuer time out"));
@@ -75,7 +81,7 @@ namespace Minipay.Application.Tests.Handlers
             _repositoryMock.Setup
                 (r => r.GetByIdAsync(payment.Id, It.IsAny<CancellationToken>())).ReturnsAsync(payment);
 
-            var handler = new FailPaymentHandler(_repositoryMock.Object, NullLogger<FailPaymentHandler>.Instance);
+            var handler = BuildHandler();
 
             //act
             var act = async() => await handler.HandleAsync(new FailPaymentCommand(payment.Id, "too late"));
@@ -99,7 +105,7 @@ namespace Minipay.Application.Tests.Handlers
             _repositoryMock.Setup
                 (r => r.GetByIdAsync(payment.Id, It.IsAny<CancellationToken>())).ReturnsAsync(payment);
 
-            var handler = new FailPaymentHandler(_repositoryMock.Object, NullLogger<FailPaymentHandler>.Instance);
+            var handler = BuildHandler();
 
             //act
             var act = async () => await handler.HandleAsync(new FailPaymentCommand(payment.Id,"second failure"));
@@ -115,7 +121,7 @@ namespace Minipay.Application.Tests.Handlers
             _repositoryMock.Setup
                 (r => r.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync((Payment?)null);
 
-            var handler = new FailPaymentHandler(_repositoryMock.Object,NullLogger<FailPaymentHandler>.Instance);
+            var handler = BuildHandler();
 
             //act
             var act = async () => await handler.HandleAsync(new FailPaymentCommand(Guid.NewGuid(), "some reason"));

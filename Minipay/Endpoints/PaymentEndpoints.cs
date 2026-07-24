@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Minipay.Api.Contracts;
+using Minipay.Application.Commons.Interfaces;
 using Minipay.Application.Payments.Command.AuthorizePayment;
 using Minipay.Application.Payments.Command.CreatePayment;
 using Minipay.Application.Payments.Command.FailPayment;
 using Minipay.Application.Payments.Command.SettlePayment;
+using Minipay.Application.Payments.Dtos;
 using Minipay.Application.Payments.Exceptions;
 using Minipay.Application.Payments.Queries.GetPaymentById;
 using Minipay.Application.Payments.Queries.GetPaymentByStatus;
@@ -58,6 +60,11 @@ public static class PaymentEndpoints
             .Produces<PaymentResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status409Conflict);
+
+        group.MapGet("/statistics", GetStatisticsAsync)
+            .WithName("GetStatistics")
+            .WithSummary("Get all payment count since the app started")
+            .Produces<PaymentStatisticsDto>(StatusCodes.Status200OK);
     }
 
 
@@ -189,7 +196,11 @@ public static class PaymentEndpoints
             return Results.Conflict(new { error = ex.Message });
         }
     }
-        
+    private static IResult GetStatisticsAsync(
+        [FromServices] IPaymentStatisticsService statisticsService)
+    {
+        return Results.Ok(statisticsService.GetStatistics());
+    }
         
 }
 

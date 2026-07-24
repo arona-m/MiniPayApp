@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Minipay.Application.Commons.Interfaces;
+using Minipay.Infrastructure.Statistics;
 using Minipay.Infrastructure.Validation;
 
 namespace Minipay.Infrastructure
@@ -20,6 +21,8 @@ namespace Minipay.Infrastructure
 
             //new insrance per request, CurrencyV is stateless and has no fields that change 
             services.AddTransient<ICurrencyValidator, CurrencyValidator>();
+            // same instance per app lifetime
+            services.AddSingleton<IPaymentStatisticsService, PaymentStatisticsService>();
 
             return services;
         }
