@@ -10,16 +10,16 @@ namespace Minipay.Application.Payments.Command.AuthorizePayment;
 public sealed class AuthorizePaymentHandler : ICommandHandler<AuthorizePaymentCommand, PaymentDto>
 {
     private readonly IPaymentRepository _paymentRepository;
-    //private readonly IEventBus _eventBus;
+    
     private readonly ILogger<AuthorizePaymentHandler> _logger;
 
     public AuthorizePaymentHandler(
      IPaymentRepository paymentRepository,
-    //IEventBus eventBus,
+    
      ILogger<AuthorizePaymentHandler> logger)
     {
         _paymentRepository = paymentRepository;
-        //_eventBus = eventBus;
+       
         _logger = logger;
     }
 

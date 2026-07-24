@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Minipay.Application.Commons.Interfaces;
 using Minipay.Application.Payments.Command.AuthorizePayment;
 using Minipay.Application.Payments.Command.CreatePayment;
 using Minipay.Application.Payments.Command.FailPayment;
@@ -19,7 +20,6 @@ public static class DependencyInjection
         services.AddScoped<GetPaymentByStatusHandler>();
         services.AddScoped<FailPaymentHandler>();
         services.AddScoped<SettlePaymentHandler>();
-
         return services;
     }
 }
