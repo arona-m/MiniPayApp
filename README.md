@@ -1,4 +1,4 @@
-Created the Domain layer for# MiniPay
+# MiniPay
 
 A payment processing API built to demonstrate **Clean Architecture**, **Domain-Driven Design**, and **SOLID principles** 
 
